@@ -38,7 +38,7 @@ class NextActivity : ComponentActivity() {
                     topBar = {
                         TopAppBar(
                             title = { Text(text = "app bar title") },
-                            navigationIcon = if (controller.previousBackStackEntry != null) { {
+                            navigationIcon = if (controller.previousBackStackEntry != null) { 
                                 IconButton(
                                     onClick = { controller.navigateUp() }
                                 ) {
@@ -46,7 +46,7 @@ class NextActivity : ComponentActivity() {
                                         imageVector = Icons.Filled.ArrowBack,
                                         contentDescription = "Back"
                                     )
-                                }}
+                                }
                             } else {
                                 null
                             }
