@@ -85,23 +85,6 @@ fun VisitMyProfile() {
                 textAlign = TextAlign.Center,
             )
         }
-        
-        Button(
-            enabled = true,
-            onClick = {
-                context.startActivity(
-                    Intent(
-                        context,
-                        MainActivity::class.java
-                    )
-                )
-            },
-        ) {
-            Text(
-                text = "←",
-                textAlign = TextAlign.Center,
-            )
-        }
     }
 }
 /*
