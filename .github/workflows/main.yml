@@ -4,15 +4,9 @@ on:
   push:
     branches:
       - master
+      - main
 jobs:
-  isvalid:
-    if: startsWith(github.event.commits[0].message, 'v')
-    runs-on: ubuntu-latest
-    steps:
-      - name: Run
-        run: echo "Good to go"
   apk:
-    needs: isvalid
     name: Generate APK 
     runs-on: ubuntu-latest
     steps:
@@ -22,9 +16,17 @@ jobs:
         with:
           java-version: '11'
           distribution: 'temurin'
-          cache: gradle
+          cache: gradle      
+      - name: Update version
+        uses: chkfung/android-version-actions@v1.1
+        with:
+          gradlePath: app/build.gradle # or app/build.gradle.kts 
+          versionCode: ${{ github.run_number }}
+          versionName: ${{ github.run_number }}
       - name: Build APK
-        run: bash ./gradlew assembleDebug --stacktrace
+        run: |
+         gradle wrapper
+         bash ./gradlew assembleDebug --stacktrace
       - name: Upload APK
         uses: actions/upload-artifact@v2
         with:
@@ -33,22 +35,21 @@ jobs:
   release:
     name: Release APK
     needs: apk
+    if: startsWith(github.event.commits[0].message, 'Update')
     runs-on: ubuntu-latest
     steps:
       - name: Download APK from build
         uses: actions/download-artifact@v2
         with:
-          name: apk  
+          name: apk 
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} 
         with:
-          tag_name: ${{ github.event.commits[0].message }}
-          release_name: Release ${{ github.event.commits[0].message }}
-      - name: ls
-        run: ls -a
+          tag_name: ${{ github.run_number }}
+          release_name: Release v${{ github.run_number }}
       - name: Upload Release APK
         id: upload_release_asset
         uses: actions/upload-release-asset@v1.0.1
@@ -57,5 +58,5 @@ jobs:
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
           asset_path: app-debug.apk
-          asset_name: app.apk
+          asset_name: Dark-GitHub-${{ github.run_number }}.apk # ${{ github.event.commits[0].message }}
           asset_content_type: application/zip
