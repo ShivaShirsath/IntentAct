@@ -26,29 +26,30 @@ class NextActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             IntentActTheme {
-            val controller = rememberNavController()
-            Scaffold(
-                topBar = {
-                    TopAppBar(
-                        title = { Text(text = "app bar title") },
-                        navigationIcon = if (controller.previousBackStackEntry != null) { 
-                            {
-                                IconButton(onClick = { controller.navigateUp() }) {
+                val controller = rememberNavController()
+                Scaffold(
+                    topBar = {
+                        TopAppBar(
+                            title = { Text(text = "app bar title") },
+                            navigationIcon = if (controller.previousBackStackEntry != null) { 
+                                IconButton(
+                                    onClick = { controller.navigateUp() }
+                                ) {
                                     Icon(
                                         imageVector = Icons.Filled.ArrowBack,
                                         contentDescription = "Back"
                                     )
                                 }
+                            } else {
+                                null
                             }
-                        } else {
-                            null
-                        }
-                    )
-                },
-                content = {
-                    VisitMyProfile()
-                }
-            )
+                        )
+                    },
+                    content = {
+                        VisitMyProfile()
+                    }
+                )
+            }
         }
     }
 }
