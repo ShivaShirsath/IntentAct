@@ -37,19 +37,23 @@ class NextActivity : ComponentActivity() {
                 Scaffold(
                     topBar = {
                         TopAppBar(
-                            title = { Text(text = "app bar title") },
-                            navigationIcon = if (controller.previousBackStackEntry != null) { 
-                                IconButton(
-                                    onClick = { controller.navigateUp() }
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.ArrowBack,
-                                        contentDescription = "Back"
-                                    )
-                                }
-                            } else {
-                                null
-                            }
+                          val context = LocalContext.current
+        Button(
+            enabled = true,
+            onClick = {
+                context.startActivity(
+                    Intent(
+                        context,
+                        MainActivity::class.java
+                    )
+                )
+            },
+        ) {
+            Text(
+                text = "Back",
+                textAlign = TextAlign.Center,
+            )
+        }  
                         )
                     },
                     content = {
