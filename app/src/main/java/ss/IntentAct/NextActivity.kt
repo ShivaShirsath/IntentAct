@@ -26,10 +26,29 @@ class NextActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         setContent {
             IntentActTheme {
-                Surface(color = MaterialTheme.colors.background) {
+            val controller = rememberNavController()
+            Scaffold(
+                topBar = {
+                    TopAppBar(
+                        title = { Text(text = "app bar title") },
+                        navigationIcon = if (controller.previousBackStackEntry != null) { 
+                            {
+                                IconButton(onClick = { controller.navigateUp() }) {
+                                    Icon(
+                                        imageVector = Icons.Filled.ArrowBack,
+                                        contentDescription = "Back"
+                                    )
+                                }
+                            }
+                        } else {
+                            null
+                        }
+                    )
+                },
+                content = {
                     VisitMyProfile()
                 }
-            }
+            )
         }
     }
 }
@@ -45,6 +64,12 @@ fun VisitMyProfile() {
         Button(
             enabled = true,
             onClick = {
+                context.startActivity(
+                    Intent(
+                        context,
+                        MainActivity::class.java
+                    )
+                ) 
                 context.startActivity(
                     Intent(
                         Intent.ACTION_VIEW,
