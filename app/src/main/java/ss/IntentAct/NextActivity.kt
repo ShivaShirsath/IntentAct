@@ -47,12 +47,6 @@ fun VisitMyProfile() {
             onClick = {
                 context.startActivity(
                     Intent(
-                        context,
-                        SecondActivity::class.java
-                    )
-                ) 
-                context.startActivity(
-                    Intent(
                         Intent.ACTION_VIEW,
                         Uri.parse(
                             "https://github.com/ShivaShirsath"
